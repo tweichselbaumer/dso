@@ -15,23 +15,22 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # required libraries
 find_package(SuiteParse REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(Boost COMPONENTS system thread) 
+find_package(Boost REQUIRED COMPONENTS system thread) 
+include_directories(${Boost_INCLUDE_DIR})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
 # optional libraries
 find_package(LibZip QUIET)
 find_package(Pangolin 0.2 QUIET)
 find_package(OpenCV QUIET)
 
-# flags
-add_definitions("-DENABLE_SSE")
-set(CMAKE_CXX_FLAGS
-   "${SSE_FLAGS} -O3 -g -std=c++0x -march=native"
-#   "${SSE_FLAGS} -O3 -g -std=c++0x -fno-omit-frame-pointer"
-)
 
 if (MSVC)
-     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /FR /bigobj")
 endif (MSVC)
+
+add_definitions("-D__SSE3__")
+add_definitions("-DNOMINMAX")
 
 # Sources files
 set(dso_SOURCE_FILES
@@ -64,6 +63,7 @@ include_directories(
   ${EIGEN3_INCLUDE_DIR}
 ) 
 
+message(${EIGEN3_INCLUDE_DIR})
 
 # decide if we have pangolin
 if (Pangolin_FOUND)
@@ -109,7 +109,9 @@ endif()
 
 
 # compile main library.
-include_directories( ${CSPARSE_INCLUDE_DIR} ${CHOLMOD_INCLUDE_DIR}) 
+message("${SuiteSparse_INCLUDE_DIRS}")
+message("${SuiteSparse_CHOLMOD_INCLUDE_DIR}")
+include_directories( ${SuiteSparse_INCLUDE_DIRS} ${SuiteSparse_CHOLMOD_INCLUDE_DIR}) 
 add_library(dso ${dso_SOURCE_FILES} ${dso_opencv_SOURCE_FILES} ${dso_pangolin_SOURCE_FILES})
 
 #set_property( TARGET dso APPEND_STRING PROPERTY COMPILE_FLAGS -Wall )
