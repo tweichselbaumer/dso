@@ -21,7 +21,7 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
 # optional libraries
 find_package(LibZip QUIET)
-find_package(Pangolin 0.2 QUIET)
+find_package(Pangolin QUIET)
 find_package(OpenCV QUIET)
 
 
