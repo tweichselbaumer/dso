@@ -393,14 +393,27 @@ double FullSystem::calcMEnergy()
 
 void FullSystem::printOptRes(const Vec3 &res, double resL, double resM, double resPrior, double LExact, float a, float b)
 {
+#ifdef __linux
 	printf("A(%f)=(AV %.3f). Num: A(%'d) + M(%'d); ab %f %f!\n",
-			res[0],
-			sqrtf((float)(res[0] / (patternNum*ef->resInA))),
-			ef->resInA,
-			ef->resInM,
-			a,
-			b
+		res[0],
+		sqrtf((float)(res[0] / (patternNum*ef->resInA))),
+		ef->resInA,
+		ef->resInM,
+		a,
+		b
 	);
+#else
+	printf("A(%f)=(AV %.3f). Num: A(%d) + M(%d); ab %f %f!\n",
+		res[0],
+		sqrtf((float)(res[0] / (patternNum*ef->resInA))),
+		ef->resInA,
+		ef->resInM,
+		a,
+		b
+	);
+#endif // __linux
+
+	
 
 }
 
