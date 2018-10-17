@@ -29,7 +29,12 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#ifdef WIN32
 #include <io.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "IOWrapper/Output3DWrapper.h"
 #include "IOWrapper/ImageDisplay.h"

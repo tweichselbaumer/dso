@@ -37,9 +37,9 @@ struct tms {
    dead children (and their dead children) in BUFFER.
    Return the elapsed real time, or (clock_t) -1 for errors.
    All times are in CLK_TCKths of a second.  */
-clock_t times (struct tms *__buffer);
+clock_t times(struct tms *__buffer);
 
-typedef long long suseconds_t ;
+typedef long long suseconds_t;
 
 #endif
 #endif

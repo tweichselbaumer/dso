@@ -22,7 +22,10 @@
 */
 
 #pragma once
-#include <sys/time.h>
+#ifdef WIN32
+#include <util/time.h>
+#endif
+
 #include <pangolin/pangolin.h>
 #include "boost/thread.hpp"
 #include "util/MinimalImage.h"
@@ -30,25 +33,13 @@
 #include <map>
 #include <deque>
 
+#ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
-//#include <stdint.h> // portable: uint64_t   MSVC: __int64 
-
+#endif //WIN32
 
 namespace dso
 {
-
-	// MSVC defines this in winsock2.h!?
-	/*typedef struct timeval {
-		long tv_sec;
-		long tv_usec;
-	} timeval;*/
-
-	int gettimeofday2(struct timeval * tp, struct timezone * tzp);
-
-	/*class FrameHessian;
-	class CalibHessian;*/
-
 	struct FrameHessian;
 	struct CalibHessian;
 	class FrameShell;

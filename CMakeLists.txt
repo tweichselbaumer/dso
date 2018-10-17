@@ -26,11 +26,18 @@ find_package(OpenCV QUIET)
 
 
 if (MSVC)
-     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /FR /bigobj /fp:fast /openmp /Ox")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /FR /bigobj /fp:fast /openmp /Ox")
+	add_definitions("-D__SSE3__")
+	add_definitions("-DNOMINMAX")
+else()
+	add_definitions("-DENABLE_SSE")
+	set(CMAKE_CXX_FLAGS "${SSE_FLAGS} -O3 -g -std=c++0x -march=native")
 endif (MSVC)
 
-add_definitions("-D__SSE3__")
-add_definitions("-DNOMINMAX")
+if (MSVC)
+   set(dso_pangolin_MSVC_SOURCE_FILES 
+	  ${PROJECT_SOURCE_DIR}/src/util/times.cpp)
+endif (MSVC)
 
 # Sources files
 set(dso_SOURCE_FILES
@@ -112,7 +119,7 @@ endif()
 message("${SuiteSparse_INCLUDE_DIRS}")
 message("${SuiteSparse_CHOLMOD_INCLUDE_DIR}")
 include_directories( ${SuiteSparse_INCLUDE_DIRS} ${SuiteSparse_CHOLMOD_INCLUDE_DIR}) 
-add_library(dso ${dso_SOURCE_FILES} ${dso_opencv_SOURCE_FILES} ${dso_pangolin_SOURCE_FILES})
+add_library(dso ${dso_SOURCE_FILES} ${dso_opencv_SOURCE_FILES} ${dso_pangolin_SOURCE_FILES} ${dso_pangolin_MSVC_SOURCE_FILES})
 
 #set_property( TARGET dso APPEND_STRING PROPERTY COMPILE_FLAGS -Wall )
 
